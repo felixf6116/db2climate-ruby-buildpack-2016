@@ -1,4 +1,4 @@
-# Modified by Felix Fong line 27-46 and line 870-928
+# Modified by Felix Fong line 27-46 and line 870-928 and line 993-1004
 require "tmpdir"
 require "digest/md5"
 require "benchmark"
@@ -988,4 +988,17 @@ params = CGI.parse(uri.query || "")
       install_bundler_in_app
     end
   end
+end
+
+def fetch_package(filename, url=VENDOR_URL)      
+    fetch_from_curl(filename, url)
+end
+
+def fetch_package_and_untar(filename, url=VENDOR_URL)
+  fetch_package(filename, url) && run("tar xzf #{filename}")
+end
+
+def fetch_from_curl(filename, url)
+   system("wget #{url}/#{filename} -O #{filename}")
+   File.exist?(filename)
 end
